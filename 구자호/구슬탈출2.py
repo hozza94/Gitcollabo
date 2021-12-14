@@ -1,4 +1,4 @@
-# 문제
+# 문제 https://www.acmicpc.net/problem/13460
 # 스타트링크에서 판매하는 어린이용 장난감 중에서 가장 인기가 많은 제품은 구슬 탈출이다.
 # 구슬 탈출은 직사각형 보드에 빨간 구슬과 파란 구슬을 하나씩 넣은 다음, 빨간 구슬을 구멍을 통해 빼내는 게임이다.
 # 보드의 세로 크기는 N, 가로 크기는 M이고, 편의상 1×1크기의 칸으로 나누어져 있다. 
@@ -18,3 +18,65 @@
 # 'O'는 구멍의 위치를 의미한다. 'R'은 빨간 구슬의 위치, 'B'는 파란 구슬의 위치이다.
 # 입력되는 모든 보드의 가장자리에는 모두 '#'이 있다. 구멍의 개수는 한 개 이며, 빨간 구슬과 파란 구슬은 항상 1개가 주어진다.
 
+
+n, m = map(int, input("세로, 가로 : ").split())
+
+matrix = [['#' for i in range(m)] for j in range(n)]
+path = []
+
+pt_r = ()
+pt_b = ()
+
+# matrix 입력받고, R과 B의 위치 저장
+for i in range(n):
+    row = input()
+    for j in range(m):
+        matrix[i][j] = row[j]
+        if row[j] == 'R':
+            pt_r = i, j
+        if row[j] == 'B':
+            pt_b = i, j
+
+
+# L: i j-1 , R: i j+1, U: i-1 j, D: i+1 j
+
+def check_wall(i, j):
+    if matrix[i][j] == '#':
+        return True
+    else:
+        return False
+
+
+def check_left(i, j):
+    if not check_wall(i, j - 1):
+        check_left(i, j - 1)
+        path.append('L')
+    else:
+        return i, j
+
+
+def check_right(i, j):
+    if not check_wall(i, j + 1):
+        check_right(i, j + 1)
+        path.append('R')
+    else:
+        return i, j
+
+
+def check_up(i, j):
+    if not check_wall(i, j + 1):
+        check_up(i - 1, j)
+        path.append('U')
+    else:
+        return i, j
+
+
+def check_down(i, j):
+    if not check_wall(i, j + 1):
+        check_down(i + 1, j)
+        path.append('D')
+    else:
+        return i, j
+
+
+print(pt_r[1])
